@@ -1,4 +1,4 @@
-# JavaHTMLParser
+# HTMLParser (Java 8)
 
 Import into your IDE of choice and/or run Maven clean, Maven generate resources, then Maven generate install. The jar file will then be found under the /target directory (NOTE: this jar file should not be moved without the accompanied dependencies). The program takes one commandline argument, the name of the file which contains the 5 URLs:
 
