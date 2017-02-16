@@ -7,3 +7,5 @@ java -jar HTMLParser-0.0.1-SNAPSHOT.jar Links.txt
 ```
 
 The statistics gathered will be placed under the root directory with the name, 'runtime-statistics.txt'.
+
+Main.java contains 3 parts: single threaded behavior, multithreaded, and finally asynchronous. HTTPClient was used to make the URL queries, while Apache Tika was used to parse the responses of styling/scripting. 
