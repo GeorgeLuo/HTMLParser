@@ -1,0 +1,5 @@
+http://quantumblack.org/
+https://tika.apache.org/1.0/gettingstarted.html
+http://hc.apache.org/httpcomponents-client-ga/httpclient/examples/org/apache/http/examples/client/ClientMultiThreadedExecution.java
+https://teamtreehouse.com/community/get-data-from-laravel-route-with-angularjs
+https://tika.apache.org/download.html
