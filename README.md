@@ -15,3 +15,5 @@ TODO: Refactor setup into methods.
 TODO: Refactor parts 1, 2, and 3 into methods.
 
 TODO: Combine/configure try/catch to use same finally block.
+
+TODO: Use AsyncHTTPClient instead of Futures for part 3.
