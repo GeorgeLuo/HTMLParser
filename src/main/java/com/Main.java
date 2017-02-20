@@ -1,6 +1,8 @@
 package com;
 
 import com.StatisticsPkg;
+import runnings.AsyncRun;
+import runnings.GetThread;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -274,114 +276,5 @@ public class Main {
 		return top10;
 	}
 	
-	// Multithreading Thread
-	static class GetThread extends Thread {
-
-	    private final CloseableHttpClient httpClient;
-	    private final HttpContext context;
-	    private final HttpGet httpget;
-	    private final StatisticsPkg stats;
-	    private final ConcurrentHashMap<String,Integer> aggregateFreqMap;
-	    private final int index;
-
-	    public GetThread(CloseableHttpClient httpClient, HttpGet httpget, int index, 
-	    		ConcurrentHashMap<String,Integer> aggregateFreqMap, StatisticsPkg stats) {
-	        this.httpClient = httpClient;
-	        this.context = HttpClientContext.create();
-	        this.httpget = httpget;
-	        this.index = index;
-	        this.aggregateFreqMap = aggregateFreqMap;
-	        this.stats = stats;
-	    }
-
-	    @Override
-	    public void run() {
-	        try {
-	        	Instant start = Instant.now();
-	            CloseableHttpResponse response = httpClient.execute(
-	                    httpget, context);
-	        	Instant end = Instant.now();
-	        	stats.storeBnF(index, start, end);
-	            try {
-	            	start = Instant.now();
-	                List<String> parsed = parseToPlainText(response.getEntity().getContent());
-		    		for(String word : parsed) {
-		    			aggregateFreqMap.merge(word, 1, (oldValue, one) -> oldValue + one);
-		    		}
-		    		end = Instant.now();
-		    		stats.storeLPT(index, start, end);
-		    				    					    	
-	            } catch (UnsupportedOperationException e) {
-					e.printStackTrace();
-				} catch (SAXException e) {
-					e.printStackTrace();
-				} catch (TikaException e) {
-					e.printStackTrace();
-				} finally {
-	                response.close();
-	            }
-	        } catch (ClientProtocolException ex) {
-	        	ex.printStackTrace();
-	        } catch (IOException ex) {
-	        	ex.printStackTrace();
-	        }
-	    }
-	}
 	
-	// Asynchronous Runnable 
-    static class AsyncRun implements Runnable {
-
-	    private final CloseableHttpClient httpClient;
-	    private final HttpContext context;
-	    private final HttpGet httpget;
-	    private final StatisticsPkg stats;
-	    private final ConcurrentHashMap<String,Integer> aggregateFreqMap;
-	    private final int index;
-
-        public AsyncRun(CloseableHttpClient httpClient, HttpGet httpget, int index, 
-	    		ConcurrentHashMap<String,Integer> aggregateFreqMap, StatisticsPkg stats) {
-
-        	this.httpClient = httpClient;
-	        this.context = HttpClientContext.create();
-	        this.httpget = httpget;
-	        this.index = index;
-	        this.aggregateFreqMap = aggregateFreqMap;
-	        this.stats = stats;
-        }
-
-	    @Override
-        public void run() {
-	        try {
-	        	Instant start = Instant.now();
-	            CloseableHttpResponse response = httpClient.execute(
-	                    httpget, context);
-	        	Instant end = Instant.now();
-	        	stats.storeBnF(index, start, end);
-	            try {
-	            	start = Instant.now();
-	                List<String> parsed = parseToPlainText(response.getEntity().getContent());
-
-	                for(String word : parsed) {
-		    			aggregateFreqMap.merge(word, 1, (oldValue, one) -> oldValue + one);
-		    		}
-		    		
-		    		end = Instant.now();
-		    		stats.storeLPT(index, start, end);
-		    					    	
-	            } catch (UnsupportedOperationException e) {
-					e.printStackTrace();
-				} catch (SAXException e) {
-					e.printStackTrace();
-				} catch (TikaException e) {
-					e.printStackTrace();
-				} finally {
-	                response.close();
-	            }
-	        } catch (ClientProtocolException ex) {
-	        	ex.printStackTrace();
-	        } catch (IOException ex) {
-	        	ex.printStackTrace();
-	        }
-	    }
-    }
 }
