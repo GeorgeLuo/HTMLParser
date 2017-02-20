@@ -16,7 +16,7 @@ import org.xml.sax.SAXException;
 
 import com.StatisticsPkg;
 
-class AsyncRun implements Runnable {
+public class AsyncRun implements Runnable {
 
     private final CloseableHttpClient httpClient;
     private final HttpContext context;
@@ -38,36 +38,48 @@ class AsyncRun implements Runnable {
 
     @Override
     public void run() {
+        CloseableHttpResponse response = null;
         try {
         	Instant start = Instant.now();
-            CloseableHttpResponse response = httpClient.execute(
+            response = httpClient.execute(
                     httpget, context);
+            int status = response.getStatusLine().getStatusCode();
+            if(status != 200) {
+            	System.out.print("WARNING: Endpoint found but status is " + status);
+            }
+            
         	Instant end = Instant.now();
         	stats.storeBnF(index, start, end);
-            try {
-            	start = Instant.now();
-                List<String> parsed = RunningTools.parseToPlainText(response.getEntity().getContent());
+        	
+        	start = Instant.now();
+            List<String> parsed = RunningTools.parseToPlainText(response.getEntity().getContent());
 
-                for(String word : parsed) {
-	    			aggregateFreqMap.merge(word, 1, (oldValue, one) -> oldValue + one);
-	    		}
-	    		
-	    		end = Instant.now();
-	    		stats.storeLPT(index, start, end);
+            for(String word : parsed) {
+    			aggregateFreqMap.merge(word, 1, (oldValue, one) -> oldValue + one);
+    		
+    		end = Instant.now();
+    		stats.storeLPT(index, start, end);
 	    					    	
-            } catch (UnsupportedOperationException e) {
+            }
+        	} catch (UnsupportedOperationException e) {
 				e.printStackTrace();
 			} catch (SAXException e) {
 				e.printStackTrace();
 			} catch (TikaException e) {
 				e.printStackTrace();
-			} finally {
-                response.close();
+			} catch (ClientProtocolException ex) {
+	        	ex.printStackTrace();
+	        } catch (IOException ex) {
+	        	ex.printStackTrace();
+	        }
+            finally {
+                try {
+					response.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
-        } catch (ClientProtocolException ex) {
-        	ex.printStackTrace();
-        } catch (IOException ex) {
-        	ex.printStackTrace();
-        }
+
     }
 }

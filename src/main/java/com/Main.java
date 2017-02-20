@@ -12,7 +12,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,22 +25,12 @@ import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.protocol.HttpContext;
 import org.apache.tika.exception.TikaException;
-import org.apache.tika.metadata.Metadata;
-import org.apache.tika.sax.BodyContentHandler;
 import org.xml.sax.SAXException;
-import org.apache.tika.parser.AutoDetectParser;
-
 import java.time.Instant;
-
-import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
 
 
 public class Main {
@@ -122,7 +111,7 @@ public class Main {
 	    	}
 	    }
 	    
-	    stats1.setTop10words(getTop10words(aggregate));
+	    stats1.setTop10words(RunningTools.getTop10words(aggregate));
 	    
     	Instant end = Instant.now();
     	stats1.storeNR(start, end);
@@ -183,7 +172,7 @@ public class Main {
 //		System.out.println("all joined at: " + Instant.now().toString());
     	stats2.storeNR(start, end);
 	    
-	    stats2.setTop10words(getTop10words(aggregateFreqMap));
+	    stats2.setTop10words(RunningTools.getTop10words(aggregateFreqMap));
 	    out.println(stats2.getTop10String(aggregateFreqMap));
 	    out.println(stats2.printStats());
 		System.out.println(stats2.getTop10String(aggregateFreqMap));
@@ -218,8 +207,6 @@ public class Main {
 	    
 	    counter = 0;
 	    while((line = in.readLine()) != null) {
-	    	tempStart = Instant.now();
-
 	    	httpGetReuseable = new HttpGet(line);
 	        exeFutureList = CompletableFuture.runAsync(new AsyncRun(httpclient, httpGetReuseable, counter, freqMap, stats3), exe);
 	    	counter++;
@@ -229,7 +216,7 @@ public class Main {
     	end = Instant.now();
     	stats3.storeNR(start, end);
     	
-	    stats3.setTop10words(getTop10words(freqMap));
+	    stats3.setTop10words(RunningTools.getTop10words(freqMap));
 		System.out.println(stats3.getTop10String(freqMap));
     	System.out.println(stats3.printStats());
     	out.println(stats2.getTop10String(aggregateFreqMap));
@@ -240,31 +227,7 @@ public class Main {
     	exe.shutdown();
     }
     
-    // generate mapping of distinct words to frequency of appearance given an InputStream
-    
-    public static Map<String, Integer> freqMap(List<String> parsed) throws IOException, SAXException, TikaException {
-	   
-	   Map<String, Integer> frequencyMap = parsed.stream()
-		         .collect(toMap(
-		                s -> s, // key is the word
-		                s -> 1, // value is 1
-		                Integer::sum)); // merge function counts the identical words
 
-		return frequencyMap;
-    }
-    
-    // print the top 10 most frequently occurring words in a Map of distinct words to Integer frequency, 
-    //called by main thread once freqMaps are aggregated
-    
-	public static List<String> getTop10words (Map<String, Integer> in) {
-		List<String> top10 = in.keySet().stream()
-		        .sorted(comparing(in::get).reversed()) // sort by descending frequency
-		        .distinct() // take only unique values
-		        .limit(10)   // take only the first 10
-		        .collect(toList()); // put it in a returned list
-
-		return top10;
-	}
 	
 	
 }

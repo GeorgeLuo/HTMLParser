@@ -44,6 +44,10 @@ public class GetThread extends Thread {
         	Instant start = Instant.now();
             response = httpClient.execute(
                     httpget, context);
+            int status = response.getStatusLine().getStatusCode();
+            if(status != 200) {
+            	System.out.print("WARNING: Endpoint found but status is " + status);
+            }
         	Instant end = Instant.now();
         	stats.storeBnF(index, start, end);
         	start = Instant.now();

@@ -1,0 +1,98 @@
+Part 1: 
+
+Top 10 Words by Frequency of Appearance:
+
+1. 'the' appears 364 times
+2. 'of' appears 211 times
+3. 'to' appears 140 times
+4. 'a' appears 124 times
+5. 'is' appears 90 times
+6. 'and' appears 83 times
+7. 'in' appears 82 times
+8. 'as' appears 64 times
+9. 'tika' appears 55 times
+10. 'for' appears 50 times
+
+Initialization Time: 1394000000 nanoseconds
+
+HTTP Request Back and Forth Time: 
+	Link 1: 257000000 nanoseconds
+	Link 2: 614000000 nanoseconds
+	Link 3: 200000000 nanoseconds
+	Link 4: 598000000 nanoseconds
+	Link 5: 351000000 nanoseconds
+
+Link Process Time: 
+	Link 1: 1579000000 nanoseconds
+	Link 2: 98000000 nanoseconds
+	Link 3: 103000000 nanoseconds
+	Link 4: 49000000 nanoseconds
+	Link 5: 29000000 nanoseconds
+
+Start to Finish: 5312000000 nanoseconds
+
+Part 2: 
+
+Top 10 Words by Frequency of Appearance:
+
+1. 'the' appears 364 times
+2. 'of' appears 211 times
+3. 'to' appears 140 times
+4. 'a' appears 124 times
+5. 'is' appears 90 times
+6. 'and' appears 83 times
+7. 'in' appears 82 times
+8. 'as' appears 64 times
+9. 'tika' appears 55 times
+10. 'for' appears 50 times
+
+Initialization Time: 5000000 nanoseconds
+
+HTTP Request Back and Forth Time: 
+	Link 1: 41000000 nanoseconds
+	Link 2: 445000000 nanoseconds
+	Link 3: 418000000 nanoseconds
+	Link 4: 540000000 nanoseconds
+	Link 5: 449000000 nanoseconds
+
+Link Process Time: 
+	Link 1: 31000000 nanoseconds
+	Link 2: 119000000 nanoseconds
+	Link 3: 90000000 nanoseconds
+	Link 4: 46000000 nanoseconds
+	Link 5: 23000000 nanoseconds
+
+Start to Finish: 592000000 nanoseconds
+
+Part 3: 
+
+Top 10 Words by Frequency of Appearance:
+
+1. 'the' appears 364 times
+2. 'of' appears 211 times
+3. 'to' appears 140 times
+4. 'a' appears 124 times
+5. 'is' appears 90 times
+6. 'and' appears 83 times
+7. 'in' appears 82 times
+8. 'as' appears 64 times
+9. 'tika' appears 55 times
+10. 'for' appears 50 times
+
+Initialization Time: 5000000 nanoseconds
+
+HTTP Request Back and Forth Time: 
+	Link 1: 41000000 nanoseconds
+	Link 2: 445000000 nanoseconds
+	Link 3: 418000000 nanoseconds
+	Link 4: 540000000 nanoseconds
+	Link 5: 449000000 nanoseconds
+
+Link Process Time: 
+	Link 1: 31000000 nanoseconds
+	Link 2: 119000000 nanoseconds
+	Link 3: 90000000 nanoseconds
+	Link 4: 46000000 nanoseconds
+	Link 5: 23000000 nanoseconds
+
+Start to Finish: 592000000 nanoseconds
