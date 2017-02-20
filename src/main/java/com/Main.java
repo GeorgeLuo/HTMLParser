@@ -1,8 +1,10 @@
 package com;
 
 import com.StatisticsPkg;
+
 import runnings.AsyncRun;
 import runnings.GetThread;
+import runnings.RunningTools;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -106,7 +108,7 @@ public class Main {
 	    	try {
 	    		tempStart = Instant.now();
 	    		
-	    		List<String> parsed = parseToPlainText(responseReuseable.getEntity().getContent());
+	    		List<String> parsed = RunningTools.parseToPlainText(responseReuseable.getEntity().getContent());
 	    		for(String word : parsed) {
 	    			aggregate.merge(word, 1, (oldValue, one) -> oldValue + one);
 	    		}
@@ -236,18 +238,6 @@ public class Main {
 	    out.close();
     	
     	exe.shutdown();
-    }
-    
-    // given InputStream, generate String array of all words in HTML document, cleans blanks and symbols
-    
-    public static List<String> parseToPlainText(InputStream in) throws IOException, SAXException, TikaException {
-        BodyContentHandler handler = new BodyContentHandler();
-     
-        AutoDetectParser parser = new AutoDetectParser();
-        Metadata metadata = new Metadata();
-        InputStream stream = in; 
-        parser.parse(stream, handler, metadata);
-        return Arrays.asList(handler.toString().replaceAll("[^a-zA-Z ]", "").toLowerCase().split("\\s+"));
     }
     
     // generate mapping of distinct words to frequency of appearance given an InputStream
